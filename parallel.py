@@ -6,7 +6,6 @@ import time			# IMPORT 'time' MODULE
 comm = MPI.COMM_WORLD		# DEFINE THE COMMUNICATOR
 size = comm.Get_size()		# FIND THE SIZE OF THE COMMUNICATOR CLASS
 rank = comm.Get_rank()		# FIND THE RANK OF THE CURRENT NODE
-
 if rank == 0:			#LOAD THE IMAGE ONLY IN THE MASTER NODE
 	t1 = MPI.Wtime()	# FIND THE TIME REQUIRED TO LOAD THE IMAGE
 #	img = cv2.imread('heic1502a.tif',0)	# LOAD THE IMAGE 
@@ -35,7 +34,10 @@ Inarray = comm.bcast(Inarray, root = 0)		# BROADCAST LOCAL IMAGE DIMENSIONS TO E
 #local_c = comm.bcast(local_c, root = 0)
 no_rows = Inarray[0]
 local_c = Inarray[1]
+print(no_rows, local_c)
 local_x = np.empty((no_rows, local_c),dtype='uint8')	# DEFINE LOCAL IMAGE ON EVERY NODE
+print(local_x)
+print("end test")
 comm.Scatterv(img,local_x,root = 0)	# SCATTER THE IMAGE TO EVERY NODE
 
 local_star_count = np.arange(1)		# DEFINE THE LOCAL AND TOTAL STAR COUNT VARIABLES
